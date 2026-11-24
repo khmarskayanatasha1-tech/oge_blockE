@@ -2243,3 +2243,3667 @@ document.addEventListener("DOMContentLoaded", () => {
     initGrammar5();
   }
 })();
+
+/* =========================================
+   GRAMMAR 7 — PREPOSITIONS OF PLACE
+========================================= */
+
+(() => {
+  function initGrammar7() {
+    const root = document.getElementById("grammar-topic-7");
+    if (!root || root.dataset.g7Ready === "true") return;
+    root.dataset.g7Ready = "true";
+
+    const normalize = value => String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[’‘]/g, "'")
+      .replace(/[.!?]/g, "")
+      .replace(/\s+/g, " ");
+
+    // Переключение между теорией и практикой
+    root.querySelectorAll("[data-g7-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.g7Tab;
+
+        root.querySelectorAll("[data-g7-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-g7-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.g7Panel === target
+          );
+        });
+      });
+    });
+
+    const ex1 = [
+      ["There are many fashionable clothes ___ this shop.", "in"],
+      ["Your receipt is ___ the table.", "on"],
+      ["I'll meet you ___ the entrance to the shopping centre.", "at"],
+      ["My mum lives ___ London.", "in"],
+      ["There is some juice ___ the bottle.", "in"],
+      ["The price is written ___ the label.", "on"],
+      ["There is a long queue ___ the checkout.", "at"],
+      ["I left my wallet ___ my bag.", "in"],
+      ["My brother is waiting ___ the bus stop.", "at"],
+      ["The new café is ___ the city centre.", "in"],
+      ["There is a beautiful dress ___ the shop window.", "in"],
+      ["We usually buy groceries ___ this supermarket.", "at"]
+    ];
+
+    const ex2 = [
+      ["I found some coins ___ my pocket.", "in"],
+      ["There is a special offer ___ the notice board.", "on"],
+      ["My parents are ___ the shopping centre.", "in"],
+      ["The shop assistant is standing ___ the door.", "at"],
+      ["We bought some souvenirs ___ Covent Garden.", "in"],
+      ["Your shopping list is ___ the fridge.", "on"],
+      ["There are many products ___ this box.", "in"],
+      ["Let's meet ___ the bus stop.", "at"],
+      ["The new supermarket is ___ Oxford Street.", "on"],
+      ["I saw this advertisement ___ a magazine.", "in"],
+      ["There is a stain ___ your T-shirt.", "on"],
+      ["My sister is waiting for me ___ the café.", "at"]
+    ];
+
+    const ex3 = [
+      ["The milk is in", "e"],
+      ["The price tag is on", "g"],
+      ["We are waiting at", "d"],
+      ["There are many customers in", "a"],
+      ["My dad works in", "h"],
+      ["I left my phone on", "b"],
+      ["The shop is in", "c"],
+      ["Let's meet at", "f"]
+    ];
+
+    const endings = [
+      ["a", "the supermarket."],
+      ["b", "the table."],
+      ["c", "the city centre."],
+      ["d", "the entrance."],
+      ["e", "the bottle."],
+      ["f", "the shopping centre."],
+      ["g", "the jacket."],
+      ["h", "the sales department."]
+    ];
+
+    const ex4 = [
+      ["There are some apples on the bag.", "There are some apples in the bag."],
+      ["My dad is at work now.", "Correct."],
+      ["I saw this dress at a magazine.", "I saw this dress in a magazine."],
+      ["There is a long queue in the checkout.", "There is a long queue at the checkout."],
+      ["We live at London.", "We live in London."],
+      ["Your keys are on the table.", "Correct."],
+      ["I left my phone in the car.", "Correct."],
+      ["The shop assistant is standing in the door.", "The shop assistant is standing at the door."],
+      ["There is a label in the bottle.", "There is a label on the bottle."],
+      ["I found a nice souvenir in the market.", "Correct."],
+      ["The café is at the city centre.", "The café is in the city centre."],
+      ["There are many products in the shop.", "Correct."]
+    ];
+
+    const ex5 = [
+      "at", "in", "in", "in", "on", "in", "at", "at"
+    ];
+
+    const ex6 = [
+      ["My mum is in the supermarket now."],
+      ["Your receipt is on the table."],
+      ["Let's meet at the entrance to the shopping centre."],
+      ["I left the money in the pocket of my jacket."],
+      ["There are many shops in the city centre."],
+      ["There is a label on the bottle."],
+      ["The shop assistant is standing at the door."],
+      ["I saw this advertisement in a magazine."]
+    ];
+
+    function renderTextExercise(containerId, questions, prefix) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = questions.map((item, index) => `
+        <div class="g7-question">
+          <label for="${prefix}-${index + 1}">
+            ${index + 1}. ${item[0]}
+          </label>
+          <input type="text" id="${prefix}-${index + 1}" autocomplete="off">
+        </div>
+      `).join("");
+    }
+
+    renderTextExercise("g7-ex1", ex1, "g7a");
+    renderTextExercise("g7-ex2", ex2, "g7b");
+
+    document.getElementById("g7-ex3").innerHTML =
+      ex3.map((item, index) => `
+        <div class="g7-question">
+          <label for="g7c-${index + 1}">
+            ${index + 1}. ${item[0]}
+          </label>
+          <select id="g7c-${index + 1}">
+            <option value="">Choose an ending</option>
+            ${endings.map(end => `
+              <option value="${end[0]}">${end[0]}. ${end[1]}</option>
+            `).join("")}
+          </select>
+        </div>
+      `).join("");
+
+    document.getElementById("g7-ex4").innerHTML =
+      ex4.map((item, index) => `
+        <div class="g7-question">
+          <label for="g7d-${index + 1}">
+            ${index + 1}. ${item[0]}
+          </label>
+          <input type="text" id="g7d-${index + 1}"
+            placeholder="Correct / rewrite the sentence">
+        </div>
+      `).join("");
+
+    document.getElementById("g7-ex6").innerHTML =
+      ex6.map((item, index) => `
+        <div class="g7-question">
+          <label for="g7f-${index + 1}">
+            ${index + 1}. ${[
+              "Моя мама сейчас в супермаркете.",
+              "Твой чек лежит на столе.",
+              "Давай встретимся у входа в торговый центр.",
+              "Я оставил(а) деньги в кармане куртки.",
+              "В центре города много магазинов.",
+              "На бутылке есть этикетка.",
+              "Продавец-консультант стоит у двери.",
+              "Я увидел(а) эту рекламу в журнале."
+            ][index]}
+          </label>
+          <textarea id="g7f-${index + 1}" rows="2"
+            placeholder="Translate into English"></textarea>
+        </div>
+      `).join("");
+
+    function mark(element, correct) {
+      if (!element) return;
+      element.classList.remove("g7-correct", "g7-incorrect");
+      element.classList.add(correct ? "g7-correct" : "g7-incorrect");
+    }
+
+    function showFeedback(number, results, score, total) {
+      const feedback = document.getElementById(`g7-feedback-${number}`);
+      feedback.innerHTML = `
+        <p><strong>Result: ${score} / ${total}</strong></p>
+        ${results.map(result => `
+          <div class="g7-result ${result.correct ? "correct" : "incorrect"}">
+            ${result.correct ? "✓" : "✗"} ${result.text}
+          </div>
+        `).join("")}
+      `;
+    }
+
+    function checkSimple(number, prefix, answers, prompts) {
+      let score = 0;
+      const results = [];
+
+      answers.forEach((answer, index) => {
+        const element = document.getElementById(`${prefix}-${index + 1}`);
+        const correct = normalize(element.value) === normalize(answer);
+        mark(element, correct);
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${answer}`
+        });
+      });
+
+      showFeedback(number, results, score, answers.length);
+    }
+
+    function checkExercise3() {
+      let score = 0;
+      const results = [];
+
+      ex3.forEach((item, index) => {
+        const element = document.getElementById(`g7c-${index + 1}`);
+        const correct = element.value === item[1];
+        mark(element, correct);
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct match: ${item[1]}`
+        });
+      });
+
+      showFeedback(3, results, score, ex3.length);
+    }
+
+    function checkExercise4() {
+      let score = 0;
+      const results = [];
+
+      ex4.forEach((item, index) => {
+        const element = document.getElementById(`g7d-${index + 1}`);
+        const answer = normalize(item[1]);
+        const value = normalize(element.value);
+        const correct = value === answer ||
+          (answer === "correct" && value === "correct");
+
+        mark(element, correct);
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${item[1]}`
+        });
+      });
+
+      showFeedback(4, results, score, ex4.length);
+    }
+
+    function checkExercise6() {
+      let score = 0;
+      const results = [];
+
+      ex6.forEach((answers, index) => {
+        const element = document.getElementById(`g7f-${index + 1}`);
+        const value = normalize(element.value);
+        const correct = answers.some(answer => normalize(answer) === value);
+
+        mark(element, correct);
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Possible answer: ${answers[0]}`
+        });
+      });
+
+      showFeedback(6, results, score, ex6.length);
+    }
+
+    root.querySelectorAll("[data-g7-check]").forEach(button => {
+      button.addEventListener("click", () => {
+        const number = Number(button.dataset.g7Check);
+
+        if (number === 1) {
+          checkSimple(1, "g7a", ex1.map(item => item[1]));
+        } else if (number === 2) {
+          checkSimple(2, "g7b", ex2.map(item => item[1]));
+        } else if (number === 3) {
+          checkExercise3();
+        } else if (number === 4) {
+          checkExercise4();
+        } else if (number === 5) {
+          const results = [];
+          let score = 0;
+
+          ex5.forEach((answer, index) => {
+            const element = document.getElementById(`g7-ex5-${index + 1}`);
+            const correct = normalize(element.value) === answer;
+            mark(element, correct);
+            if (correct) score++;
+
+            results.push({
+              correct,
+              text: correct
+                ? `${index + 1}. Correct`
+                : `${index + 1}. Correct answer: ${answer}`
+            });
+          });
+
+          showFeedback(5, results, score, ex5.length);
+        } else if (number === 6) {
+          checkExercise6();
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGrammar7);
+  } else {
+    initGrammar7();
+  }
+})();
+
+/* =========================================
+   GRAMMAR 7 — ADDITIONAL EXERCISES 7–12
+========================================= */
+
+(() => {
+  function initGrammar7Additional() {
+    const root = document.getElementById("grammar-topic-7");
+    if (!root || root.dataset.g7AdditionalReady === "true") return;
+    root.dataset.g7AdditionalReady = "true";
+
+    const normalize = value => String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[’‘]/g, "'")
+      .replace(/[.!?]/g, "")
+      .replace(/\s+/g, " ");
+
+    const exercise7 = [
+      ["______ a queue", "in"],
+      ["______ the left", "on"],
+      ["______ the top of the page", "at"],
+      ["______ the back of the car", "in"],
+      ["______ the front of the cinema", "at"],
+      ["______ the corner of the room", "in"],
+      ["______ a magazine", "in"],
+      ["______ the first floor", "on"],
+      ["______ the end of the street", "at"],
+      ["______ a shopping list", "on"],
+      ["______ the sales department", "in"],
+      ["______ the right-hand side", "on"]
+    ];
+
+    const exercise8 = [
+      {
+        text: "My brother was sitting ______ of the car.",
+        options: ["in the back", "at the back"],
+        answer: "in the back"
+      },
+      {
+        text: "The garden is ______ of the house.",
+        options: ["in the back", "at the back"],
+        answer: "at the back"
+      },
+      {
+        text: "There is a price tag ______ of the box.",
+        options: ["on the back", "at the back"],
+        answer: "on the back"
+      },
+      {
+        text: "The shop is ______ the corner of the street.",
+        options: ["in", "at"],
+        answer: "at"
+      },
+      {
+        text: "There is a small table ______ the corner of the room.",
+        options: ["in", "at"],
+        answer: "in"
+      },
+      {
+        text: "The supermarket is ______ the end of the street.",
+        options: ["at", "in"],
+        answer: "at"
+      },
+      {
+        text: "The café is ______ the left.",
+        options: ["on", "in"],
+        answer: "on"
+      },
+      {
+        text: "The clothes department is ______ the second floor.",
+        options: ["on", "at"],
+        answer: "on"
+      },
+      {
+        text: "I saw this offer ______ a magazine.",
+        options: ["in", "on"],
+        answer: "in"
+      },
+      {
+        text: "Write your name ______ the top of the page.",
+        options: ["at", "on"],
+        answer: "at"
+      }
+    ];
+
+    const exercise9 = [
+      ["We had dinner ______ the restaurant.", "at"],
+      ["There were many customers ______ the restaurant.", "in"],
+      ["My dad is ______ work until six.", "at"],
+      ["My sister is ______ home now.", "at"],
+      ["I met my friend ______ the station.", "at"],
+      ["There are many shops ______ London.", "in"],
+      ["The shop is ______ the city centre.", "in"],
+      ["The meeting took place ______ the supermarket's head office.", "at"],
+      ["We bought some groceries ______ the supermarket.", "at"],
+      ["There was a robbery ______ the supermarket.", "at"],
+      ["My grandparents live ______ a small village.", "in"],
+      ["Does this train stop ______ Oxford?", "at"]
+    ];
+
+    const exercise10 = [
+      ["I usually travel to school ______ bus.", "on"],
+      ["We arrived ______ a taxi.", "in"],
+      ["There were many people ______ the train.", "on"],
+      ["My brother goes to the market ______ his bike.", "on"],
+      ["I left my shopping bags ______ the car.", "in"],
+      ["She was sitting ______ the front of the car.", "in"],
+      ["We travelled to London ______ a plane.", "on"],
+      ["He was riding ______ a horse.", "on"],
+      ["There are too many people ______ this bus.", "on"],
+      ["My mum usually goes to work ______ her car.", "in"]
+    ];
+
+    const exercise11 = [
+      {
+        text: "I was sitting at the back of the car.",
+        answers: ["I was sitting in the back of the car."]
+      },
+      {
+        text: "There is a small shop in the corner of the street.",
+        answers: [
+          "There is a small shop at the corner of the street.",
+          "There is a small shop on the corner of the street."
+        ]
+      },
+      {
+        text: "The price is at the back of the box.",
+        answers: ["The price is on the back of the box."]
+      },
+      {
+        text: "My sister works at the sales department.",
+        answers: ["My sister works in the sales department."]
+      },
+      {
+        text: "I saw this dress on a magazine.",
+        answers: ["I saw this dress in a magazine."]
+      },
+      {
+        text: "We met at the airport.",
+        answers: ["Correct"]
+      },
+      {
+        text: "My dad is in work now.",
+        answers: ["My dad is at work now."]
+      },
+      {
+        text: "There were many people on the bus.",
+        answers: ["Correct"]
+      },
+      {
+        text: "I left my phone at the car.",
+        answers: ["I left my phone in the car."]
+      },
+      {
+        text: "The café is at the end of the street.",
+        answers: ["Correct"]
+      },
+      {
+        text: "She lives at a small village.",
+        answers: ["She lives in a small village."]
+      },
+      {
+        text: "There is a notice on the door.",
+        answers: ["Correct"]
+      }
+    ];
+
+    const exercise12 = [
+      {
+        prompt: "Я увидел(а) это предложение в журнале.",
+        answers: ["I saw this offer in a magazine."]
+      },
+      {
+        prompt: "Наш магазин находится в конце улицы.",
+        answers: ["Our shop is at the end of the street."]
+      },
+      {
+        prompt: "Мой брат сидел на заднем сиденье машины.",
+        answers: ["My brother was sitting in the back of the car."]
+      },
+      {
+        prompt: "В углу комнаты стоит коробка с обувью.",
+        answers: ["There is a box of shoes in the corner of the room."]
+      },
+      {
+        prompt: "Мы встретились у входа в супермаркет.",
+        answers: ["We met at the entrance to the supermarket."]
+      },
+      {
+        prompt: "В автобусе было много людей.",
+        answers: ["There were many people on the bus."]
+      },
+      {
+        prompt: "Я оставил(а) кошелёк в такси.",
+        answers: ["I left my wallet in the taxi."]
+      },
+      {
+        prompt: "Этот магазин находится на втором этаже торгового центра.",
+        answers: ["This shop is on the second floor of the shopping centre."]
+      }
+    ];
+
+    function renderTextInputs(containerId, questions, prefix) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = questions.map((item, index) => `
+        <div class="g7-question">
+          <label for="${prefix}-${index + 1}">
+            ${index + 1}. ${item[0]}
+          </label>
+          <input
+            type="text"
+            id="${prefix}-${index + 1}"
+            autocomplete="off"
+            placeholder="Your answer"
+          >
+        </div>
+      `).join("");
+    }
+
+    function renderSelects(containerId, questions, prefix) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = questions.map((item, index) => `
+        <div class="g7-question">
+          <label for="${prefix}-${index + 1}">
+            ${index + 1}. ${item.text}
+          </label>
+          <select id="${prefix}-${index + 1}">
+            <option value="">Choose an option</option>
+            ${item.options.map(option => `
+              <option value="${option}">${option}</option>
+            `).join("")}
+          </select>
+        </div>
+      `).join("");
+    }
+
+    function renderTranslations(containerId, questions, prefix) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = questions.map((item, index) => `
+        <div class="g7-question">
+          <label for="${prefix}-${index + 1}">
+            ${index + 1}. ${item.prompt}
+          </label>
+          <textarea
+            id="${prefix}-${index + 1}"
+            rows="2"
+            placeholder="Translate into English"
+          ></textarea>
+        </div>
+      `).join("");
+    }
+
+    renderTextInputs(
+      "g7-ex7",
+      exercise7,
+      "g7-extra-7"
+    );
+
+    renderSelects(
+      "g7-ex8",
+      exercise8,
+      "g7-extra-8"
+    );
+
+    renderTextInputs(
+      "g7-ex9",
+      exercise9,
+      "g7-extra-9"
+    );
+
+    renderTextInputs(
+      "g7-ex10",
+      exercise10,
+      "g7-extra-10"
+    );
+
+    renderTextInputs(
+      "g7-ex11",
+      exercise11.map(item => [item.text]),
+      "g7-extra-11"
+    );
+
+    renderTranslations(
+      "g7-ex12",
+      exercise12,
+      "g7-extra-12"
+    );
+
+    function mark(element, correct) {
+      if (!element) return;
+
+      element.classList.remove("g7-correct", "g7-incorrect");
+      element.classList.add(
+        correct ? "g7-correct" : "g7-incorrect"
+      );
+    }
+
+    function showFeedback(number, results, score, total) {
+      const feedback = document.getElementById(
+        `g7-feedback-${number}`
+      );
+
+      if (!feedback) return;
+
+      feedback.innerHTML = `
+        <p><strong>Result: ${score} / ${total}</strong></p>
+        ${results.map(result => `
+          <div class="g7-result ${result.correct ? "correct" : "incorrect"}">
+            ${result.correct ? "✓" : "✗"} ${result.text}
+          </div>
+        `).join("")}
+      `;
+    }
+
+    function checkFillExercise(number, prefix, questions) {
+      let score = 0;
+      const results = [];
+
+      questions.forEach((item, index) => {
+        const element = document.getElementById(
+          `${prefix}-${index + 1}`
+        );
+
+        const correct = normalize(element.value) === normalize(item[1]);
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${item[1]}`
+        });
+      });
+
+      showFeedback(number, results, score, questions.length);
+    }
+
+    function checkExercise8() {
+      let score = 0;
+      const results = [];
+
+      exercise8.forEach((item, index) => {
+        const element = document.getElementById(
+          `g7-extra-8-${index + 1}`
+        );
+
+        const correct = element.value === item.answer;
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${item.answer}`
+        });
+      });
+
+      showFeedback(8, results, score, exercise8.length);
+    }
+
+    function checkExercise11() {
+      let score = 0;
+      const results = [];
+
+      exercise11.forEach((item, index) => {
+        const element = document.getElementById(
+          `g7-extra-11-${index + 1}`
+        );
+
+        const value = normalize(element.value);
+        const correct = item.answers.some(
+          answer => normalize(answer) === value
+        );
+
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Possible answer: ${item.answers.join(" / ")}`
+        });
+      });
+
+      showFeedback(11, results, score, exercise11.length);
+    }
+
+    function checkExercise12() {
+      let score = 0;
+      const results = [];
+
+      exercise12.forEach((item, index) => {
+        const element = document.getElementById(
+          `g7-extra-12-${index + 1}`
+        );
+
+        const value = normalize(element.value);
+        const correct = item.answers.some(
+          answer => normalize(answer) === value
+        );
+
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Possible answer: ${item.answers[0]}`
+        });
+      });
+
+      showFeedback(12, results, score, exercise12.length);
+    }
+
+    root.querySelectorAll("[data-g7-check]").forEach(button => {
+      button.addEventListener("click", () => {
+        const number = Number(button.dataset.g7Check);
+
+        if (number === 7) {
+          checkFillExercise(7, "g7-extra-7", exercise7);
+        } else if (number === 8) {
+          checkExercise8();
+        } else if (number === 9) {
+          checkFillExercise(9, "g7-extra-9", exercise9);
+        } else if (number === 10) {
+          checkFillExercise(10, "g7-extra-10", exercise10);
+        } else if (number === 11) {
+          checkExercise11();
+        } else if (number === 12) {
+          checkExercise12();
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initGrammar7Additional
+    );
+  } else {
+    initGrammar7Additional();
+  }
+})();
+
+/* =========================================
+   GRAMMAR 8 — CARDINAL & ORDINAL NUMBERS
+========================================= */
+
+(() => {
+  function initGrammar8() {
+    const root = document.getElementById("grammar-topic-8");
+    if (!root || root.dataset.g8Ready === "true") return;
+
+    root.dataset.g8Ready = "true";
+
+    const normalize = value => String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[’‘]/g, "'")
+      .replace(/[.!?]/g, "")
+      .replace(/\s+/g, " ");
+
+    const exercise1 = [
+      ["five", "fifth"],
+      ["three", "third"],
+      ["eight", "eighth"],
+      ["twelve", "twelfth"],
+      ["nine", "ninth"],
+      ["twenty", "twentieth"],
+      ["two", "second"],
+      ["one", "first"]
+    ];
+
+    const exercise2 = [
+      {
+        text: "This is my (three / third) visit to this shop.",
+        options: ["three", "third"],
+        answer: "third"
+      },
+      {
+        text: "She bought (twenty-one / twenty-first) pairs of socks for the charity shop.",
+        options: ["twenty-one", "twenty-first"],
+        answer: "twenty-one"
+      },
+      {
+        text: "My brother is (twelve / twelfth) years old.",
+        options: ["twelve", "twelfth"],
+        answer: "twelve"
+      },
+      {
+        text: "We were the (two / second) people in the queue.",
+        options: ["two", "second"],
+        answer: "second"
+      },
+      {
+        text: "The shop is on the (five / fifth) floor.",
+        options: ["five", "fifth"],
+        answer: "fifth"
+      },
+      {
+        text: "He spent (forty / fortieth) pounds on a new jacket.",
+        options: ["forty", "fortieth"],
+        answer: "forty"
+      },
+      {
+        text: "This is the (nine / ninth) time I have tried this recipe.",
+        options: ["nine", "ninth"],
+        answer: "ninth"
+      },
+      {
+        text: "There are (thirty-two / thirty-second) students in my class.",
+        options: ["thirty-two", "thirty-second"],
+        answer: "thirty-two"
+      }
+    ];
+
+    const exercise3 = [
+      ["1st", "first"],
+      ["2nd", "second"],
+      ["3rd", "third"],
+      ["5th", "fifth"],
+      ["8th", "eighth"],
+      ["9th", "ninth"],
+      ["12th", "twelfth"],
+      ["20th", "twentieth"],
+      ["30th", "thirtieth"],
+      ["45th", "forty-fifth"],
+      ["81st", "eighty-first"],
+      ["100th", "one hundredth"]
+    ];
+
+    const exercise4 = [
+      ["I bought __________ (3) T-shirts at the sale.", "three"],
+      ["This is the __________ (2) time I have visited this shopping centre.", "second"],
+      ["My sister is __________ (15) years old.", "fifteen"],
+      ["He was the __________ (1) customer in the shop that morning.", "first"],
+      ["We need __________ (20) minutes to prepare dinner.", "twenty"],
+      ["The __________ (4) lesson starts at ten o’clock.", "fourth"],
+      ["There are __________ (12) students in our sports club.", "twelve"],
+      ["She finished in __________ (3) place in the competition.", "third"],
+      ["I spent __________ (50) pounds on winter clothes.", "fifty"],
+      ["This is the __________ (21) century.", "twenty-first"]
+    ];
+
+    const exercise5 = [
+      {
+        text: "She bought five pair of shoes.",
+        answer: "She bought five pairs of shoes."
+      },
+      {
+        text: "This is my three visit to London.",
+        answer: "This is my third visit to London."
+      },
+      {
+        text: "He lives on the twenty floor.",
+        answer: "He lives on the twentieth floor."
+      },
+      {
+        text: "There are two hundreds people at the market.",
+        answer: "There are two hundred people at the market."
+      },
+      {
+        text: "My birthday is on the twenty-one of May.",
+        answer: "My birthday is on the twenty-first of May."
+      },
+      {
+        text: "We need a four tickets for the concert.",
+        answer: "We need four tickets for the concert."
+      },
+      {
+        text: "The shop is on the nineth floor.",
+        answer: "The shop is on the ninth floor."
+      },
+      {
+        text: "She is the one person in the queue.",
+        answer: "She is the first person in the queue."
+      }
+    ];
+
+    const exercise6 = [
+      {
+        prompt: "Pairs of socks",
+        answer: "Two pairs of socks — four pounds."
+      },
+      {
+        prompt: "Apples",
+        answer: "Six apples — three pounds."
+      },
+      {
+        prompt: "Chocolate bars",
+        answer: "Four chocolate bars — eight pounds."
+      },
+      {
+        prompt: "Notebooks",
+        answer: "Five notebooks — ten pounds."
+      }
+    ];
+
+    const exercise7 = [
+      ["125", "one hundred and twenty-five"],
+      ["340", "three hundred and forty"],
+      ["2,500", "two thousand five hundred"],
+      ["1,000", "one thousand"],
+      ["21st", "twenty-first"],
+      ["32nd", "thirty-second"],
+      ["113th", "one hundred and thirteenth"],
+      ["99th", "ninety-ninth"]
+    ];
+
+    const exercise8 = [
+      {
+        text: "There are hundreds / hundred of shops in this city.",
+        options: ["hundreds", "hundred"],
+        answer: "hundreds"
+      },
+      {
+        text: "The supermarket sells two hundred / two hundreds different products.",
+        options: ["two hundred", "two hundreds"],
+        answer: "two hundred"
+      },
+      {
+        text: "My cousin is twenty-one years / twenty-one-year old.",
+        options: ["twenty-one years", "twenty-one-year"],
+        answer: "twenty-one years"
+      },
+      {
+        text: "The sale starts on the five / fifth of January.",
+        options: ["five", "fifth"],
+        answer: "fifth"
+      },
+      {
+        text: "We bought one half / one second of the cake.",
+        options: ["one half", "one second"],
+        answer: "one half"
+      },
+      {
+        text: "She lives on the third / three floor.",
+        options: ["third", "three"],
+        answer: "third"
+      },
+      {
+        text: "There are thousands / thousand of people at the festival.",
+        options: ["thousands", "thousand"],
+        answer: "thousands"
+      },
+      {
+        text: "I paid twenty-five pounds and fifty / fiftieth pence.",
+        options: ["fifty", "fiftieth"],
+        answer: "fifty"
+      }
+    ];
+
+    const exercise9 = [
+      ["1 January", "the first of January"],
+      ["14 February", "the fourteenth of February"],
+      ["3 March", "the third of March"],
+      ["21 June", "the twenty-first of June"],
+      ["12 August", "the twelfth of August"],
+      ["31 December", "the thirty-first of December"]
+    ];
+
+    const exercise10 = [
+      "first",
+      "ten",
+      "first",
+      "two",
+      "three",
+      "two",
+      "two",
+      "twelve",
+      "six",
+      "three"
+    ];
+
+    function renderInputs(containerId, questions, prefix) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = questions.map((item, index) => `
+        <div class="g8-question">
+          <label for="${prefix}-${index + 1}">
+            ${index + 1}. ${item[0]}
+          </label>
+          <input
+            type="text"
+            id="${prefix}-${index + 1}"
+            autocomplete="off"
+            placeholder="Write your answer"
+          >
+        </div>
+      `).join("");
+    }
+
+    function renderSelects(containerId, questions, prefix) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = questions.map((item, index) => `
+        <div class="g8-question">
+          <label for="${prefix}-${index + 1}">
+            ${index + 1}. ${item.text}
+          </label>
+          <select id="${prefix}-${index + 1}">
+            <option value="">Choose an answer</option>
+            ${item.options.map(option => `
+              <option value="${option}">${option}</option>
+            `).join("")}
+          </select>
+        </div>
+      `).join("");
+    }
+
+    function renderExercise1() {
+      const container = document.getElementById("g8-ex1");
+      if (!container) return;
+
+      container.innerHTML = exercise1.map((item, index) => `
+        <div class="g8-question">
+          <label for="g8-ex1-${index + 1}">
+            ${index + 1}. ${item[0]}
+          </label>
+          <select id="g8-ex1-${index + 1}">
+            <option value="">Choose the ordinal form</option>
+            ${[
+              "eighth",
+              "twelfth",
+              "fifth",
+              "third",
+              "ninth",
+              "twentieth",
+              "second",
+              "first"
+            ].map(option => `
+              <option value="${option}">${option}</option>
+            `).join("")}
+          </select>
+        </div>
+      `).join("");
+    }
+
+    function renderExercise6() {
+      const container = document.getElementById("g8-ex6");
+      if (!container) return;
+
+      container.innerHTML = exercise6.map((item, index) => `
+        <div class="g8-question">
+          <label for="g8-ex6-${index + 1}">
+            ${index + 1}. ${item.prompt}
+          </label>
+          <input
+            type="text"
+            id="g8-ex6-${index + 1}"
+            placeholder="Write the full phrase"
+          >
+        </div>
+      `).join("");
+    }
+
+    renderExercise1();
+    renderSelects("g8-ex2", exercise2, "g8-ex2");
+    renderInputs("g8-ex3", exercise3, "g8-ex3");
+    renderInputs("g8-ex4", exercise4, "g8-ex4");
+    renderInputs(
+      "g8-ex5",
+      exercise5.map(item => [item.text]),
+      "g8-ex5"
+    );
+    renderExercise6();
+    renderInputs("g8-ex7", exercise7, "g8-ex7");
+    renderSelects("g8-ex8", exercise8, "g8-ex8");
+    renderInputs("g8-ex9", exercise9, "g8-ex9");
+
+    // Вкладки Theory / Practice
+    root.querySelectorAll("[data-g8-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.g8Tab;
+
+        root.querySelectorAll("[data-g8-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-g8-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.g8Panel === target
+          );
+        });
+      });
+    });
+
+    function mark(element, correct) {
+      if (!element) return;
+
+      element.classList.remove("g8-correct", "g8-incorrect");
+      element.classList.add(
+        correct ? "g8-correct" : "g8-incorrect"
+      );
+    }
+
+    function showFeedback(number, results, score, total) {
+      const feedback = document.getElementById(
+        `g8-feedback-${number}`
+      );
+
+      if (!feedback) return;
+
+      feedback.innerHTML = `
+        <p><strong>Result: ${score} / ${total}</strong></p>
+        ${results.map(result => `
+          <div class="g8-result ${result.correct ? "correct" : "incorrect"}">
+            ${result.correct ? "✓" : "✗"} ${result.text}
+          </div>
+        `).join("")}
+      `;
+    }
+
+    function checkTextExercise(number, prefix, questions) {
+      let score = 0;
+      const results = [];
+
+      questions.forEach((item, index) => {
+        const element = document.getElementById(
+          `${prefix}-${index + 1}`
+        );
+
+        const correct = normalize(element.value) === normalize(item[1]);
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${item[1]}`
+        });
+      });
+
+      showFeedback(number, results, score, questions.length);
+    }
+
+    function checkSelectExercise(number, prefix, questions) {
+      let score = 0;
+      const results = [];
+
+      questions.forEach((item, index) => {
+        const element = document.getElementById(
+          `${prefix}-${index + 1}`
+        );
+
+        const correct = normalize(element.value) === normalize(item.answer);
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${item.answer}`
+        });
+      });
+
+      showFeedback(number, results, score, questions.length);
+    }
+
+    function checkExercise5() {
+      let score = 0;
+      const results = [];
+
+      exercise5.forEach((item, index) => {
+        const element = document.getElementById(
+          `g8-ex5-${index + 1}`
+        );
+
+        const correct = normalize(element.value) === normalize(item.answer);
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Correct answer: ${item.answer}`
+        });
+      });
+
+      showFeedback(5, results, score, exercise5.length);
+    }
+
+    function checkExercise6() {
+      let score = 0;
+      const results = [];
+
+      exercise6.forEach((item, index) => {
+        const element = document.getElementById(
+          `g8-ex6-${index + 1}`
+        );
+
+        const correct = normalize(element.value) === normalize(item.answer);
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Possible answer: ${item.answer}`
+        });
+      });
+
+      showFeedback(6, results, score, exercise6.length);
+    }
+
+    function checkExercise10() {
+      let score = 0;
+      const results = [];
+
+      exercise10.forEach((answer, index) => {
+        const element = document.getElementById(
+          `g8-ex10-${index + 1}`
+        );
+
+        const correct = normalize(element.value) === normalize(answer);
+        mark(element, correct);
+
+        if (correct) score++;
+
+        results.push({
+          correct,
+          text: correct
+            ? `${index + 1}. Correct`
+            : `${index + 1}. Possible answer: ${answer}`
+        });
+      });
+
+      showFeedback(10, results, score, exercise10.length);
+    }
+
+    root.querySelectorAll("[data-g8-check]").forEach(button => {
+      button.addEventListener("click", () => {
+        const number = Number(button.dataset.g8Check);
+
+        if (number === 1) {
+          checkSelectExercise(1, "g8-ex1", exercise1.map(item => ({
+            answer: item[1]
+          })));
+        } else if (number === 2) {
+          checkSelectExercise(2, "g8-ex2", exercise2);
+        } else if (number === 3) {
+          checkTextExercise(3, "g8-ex3", exercise3);
+        } else if (number === 4) {
+          checkTextExercise(4, "g8-ex4", exercise4);
+        } else if (number === 5) {
+          checkExercise5();
+        } else if (number === 6) {
+          checkExercise6();
+        } else if (number === 7) {
+          checkTextExercise(7, "g8-ex7", exercise7);
+        } else if (number === 8) {
+          checkSelectExercise(8, "g8-ex8", exercise8);
+        } else if (number === 9) {
+          checkTextExercise(9, "g8-ex9", exercise9);
+        } else if (number === 10) {
+          checkExercise10();
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGrammar8);
+  } else {
+    initGrammar8();
+  }
+})();
+
+/* ==================================
+   WORD FORMATION — INTERACTIONS
+================================== */
+
+(() => {
+  function initWordFormation() {
+    const root = document.getElementById("page-word-formation");
+    if (!root || root.dataset.wfReady === "true") return;
+
+    root.dataset.wfReady = "true";
+
+    const normalize = value => String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[.!?]/g, "")
+      .replace(/\s+/g, " ");
+
+    // Вкладки: теория / практика
+    root.querySelectorAll("[data-wf-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.wfTab;
+
+        root.querySelectorAll("[data-wf-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-wf-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.wfPanel === target
+          );
+        });
+      });
+    });
+
+    // Подтверждённые ответы из ключа к заданию FE9325
+    const answersTask1 = [
+      "popularity",
+      "healthy",
+      "mainly",
+      "tasty",
+      "traditional",
+      "waiter"
+    ];
+
+    function checkTask1() {
+      let score = 0;
+      const results = [];
+
+      answersTask1.forEach((answer, index) => {
+        const input = document.getElementById(`wf1-${index + 1}`);
+        if (!input) return;
+
+        const correct = normalize(input.value) === answer;
+
+        input.classList.remove("wf-correct", "wf-incorrect");
+        input.classList.add(correct ? "wf-correct" : "wf-incorrect");
+
+        if (correct) score++;
+
+        results.push(`
+          <div class="wf-result ${correct ? "correct" : "incorrect"}">
+            ${correct ? "✓" : "✗"} ${index + 1}.
+            ${correct ? "Correct!" : `Correct answer: ${answer}`}
+          </div>
+        `);
+      });
+
+      const feedback = document.getElementById("wf-feedback-1");
+      feedback.innerHTML = `
+        <strong>Result: ${score} / ${answersTask1.length}</strong>
+        ${results.join("")}
+      `;
+    }
+
+    root.querySelector('[data-wf-check="1"]')
+      ?.addEventListener("click", checkTask1);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWordFormation);
+  } else {
+    initWordFormation();
+  }
+})();
+
+/* ==================================
+   WRITING — TABS, WORD COUNT, AUTOSAVE
+================================== */
+
+(() => {
+  function initWriting() {
+    const root = document.getElementById("page-writing");
+    if (!root || root.dataset.writingReady === "true") return;
+
+    root.dataset.writingReady = "true";
+
+    // Основные вкладки справочника
+    root.querySelectorAll("[data-writing-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.writingTab;
+
+        root.querySelectorAll("[data-writing-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-writing-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.writingPanel === target
+          );
+        });
+      });
+    });
+
+    // Переключение трёх писем
+    root.querySelectorAll("[data-writing-task]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.writingTask;
+
+        root.querySelectorAll("[data-writing-task]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-writing-task-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.writingTaskPanel === target
+          );
+        });
+      });
+    });
+
+    // Подсчёт слов
+    function countWords(text) {
+      const trimmed = text.trim();
+      if (!trimmed) return 0;
+      return trimmed.split(/\s+/).length;
+    }
+
+    function updateWordCount(key, textarea) {
+      const count = countWords(textarea.value);
+      const countElement = root.querySelector(
+        `[data-word-count="${key}"]`
+      );
+      const statusElement = root.querySelector(
+        `[data-word-status="${key}"]`
+      );
+
+      if (countElement) countElement.textContent = count;
+
+      if (statusElement) {
+        if (count === 0) {
+          statusElement.textContent = "Target: 100–120 words";
+        } else if (count < 90) {
+          statusElement.textContent = "Меньше 90 слов — недостаточный объём";
+        } else if (count < 100) {
+          statusElement.textContent = "Нужно добавить ещё немного слов";
+        } else if (count <= 120) {
+          statusElement.textContent = "✓ Объём соответствует заданию";
+        } else if (count <= 132) {
+          statusElement.textContent = "Больше 120 слов — проверь объём";
+        } else {
+          statusElement.textContent = "Больше 132 слов — превышен допустимый объём";
+        }
+      }
+    }
+
+    // Автосохранение черновиков
+    root.querySelectorAll("[data-writing-answer]").forEach(textarea => {
+      const key = textarea.dataset.writingAnswer;
+      const storageKey = `shoppingEditWriting_${key}`;
+
+      try {
+        const savedText = localStorage.getItem(storageKey);
+        if (savedText !== null) textarea.value = savedText;
+      } catch (error) {
+        // Если localStorage недоступен, поле продолжает работать.
+      }
+
+      updateWordCount(key, textarea);
+
+      textarea.addEventListener("input", () => {
+        updateWordCount(key, textarea);
+
+        try {
+          localStorage.setItem(storageKey, textarea.value);
+        } catch (error) {
+          // Черновик останется в поле до закрытия страницы.
+        }
+      });
+    });
+
+    // Очистка отдельного черновика
+    root.querySelectorAll("[data-writing-clear]").forEach(button => {
+      button.addEventListener("click", () => {
+        const key = button.dataset.writingClear;
+        const textarea = root.querySelector(
+          `[data-writing-answer="${key}"]`
+        );
+
+        if (!textarea) return;
+
+        const confirmed = window.confirm(
+          "Ты уверена, что хочешь удалить этот черновик?"
+        );
+
+        if (!confirmed) return;
+
+        textarea.value = "";
+        updateWordCount(key, textarea);
+
+        try {
+          localStorage.removeItem(`shoppingEditWriting_${key}`);
+        } catch (error) {
+          // Поле очищается и без доступа к localStorage.
+        }
+      });
+    });
+
+    // Копирование шаблона
+    const copyButton = root.querySelector("[data-copy-template]");
+    const copyStatus = root.querySelector("#writing-copy-status");
+
+    if (copyButton) {
+      copyButton.addEventListener("click", async () => {
+        const template = [
+          "Dear [Имя],",
+          "",
+          "Thanks for your recent email. I was very glad to hear from you again!",
+          "",
+          "In your email you asked me about [тема]. Well, [ответ на 1-й вопрос].",
+          "",
+          "As for [2-й вопрос], [ответ]. Personally, [ответ на 3-й вопрос].",
+          "",
+          "That's all for now. Write back soon!",
+          "",
+          "Best wishes,",
+          "",
+          "[Твоё имя]"
+        ].join("\n");
+
+        try {
+          await navigator.clipboard.writeText(template);
+          if (copyStatus) copyStatus.textContent = "Шаблон скопирован!";
+        } catch (error) {
+          if (copyStatus) {
+            copyStatus.textContent =
+              "Не удалось скопировать автоматически. Выдели текст шаблона вручную.";
+          }
+        }
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWriting);
+  } else {
+    initWriting();
+  }
+})();
+
+/* =========================================
+   SPEAKING — COMPLETE INTERACTION SCRIPT
+========================================= */
+
+(() => {
+  function initSpeakingSection() {
+    const root = document.getElementById("page-speaking");
+
+    if (!root || root.dataset.speakingInitialized === "true") {
+      return;
+    }
+
+    root.dataset.speakingInitialized = "true";
+
+    // 1. MAIN SPEAKING TABS
+    root.querySelectorAll("[data-speaking-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.speakingTab;
+
+        root.querySelectorAll("[data-speaking-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-speaking-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.speakingPanel === target
+          );
+        });
+      });
+    });
+
+    // 2. TRENDS SUBTABS
+    root.querySelectorAll("[data-trends-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.trendsTab;
+
+        root.querySelectorAll("[data-trends-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-trends-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.trendsPanel === target
+          );
+        });
+      });
+    });
+
+    // 3. MONOLOGUE SUBTABS
+    root.querySelectorAll("[data-monologue-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.monologueTab;
+
+        root.querySelectorAll("[data-monologue-tab]").forEach(tab => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        root.querySelectorAll("[data-monologue-panel]").forEach(panel => {
+          panel.classList.toggle(
+            "active",
+            panel.dataset.monologuePanel === target
+          );
+        });
+      });
+    });
+
+    // 4. AUTOSAVE FOR STUDENT ANSWERS
+    root.querySelectorAll("[data-speaking-save]").forEach(field => {
+      const key = `shoppingEditSpeaking_${field.dataset.speakingSave}`;
+
+      try {
+        const savedValue = localStorage.getItem(key);
+        if (savedValue !== null) {
+          field.value = savedValue;
+        }
+      } catch (error) {
+        console.warn("Speaking autosave is unavailable.", error);
+      }
+
+      field.addEventListener("input", () => {
+        try {
+          localStorage.setItem(key, field.value);
+        } catch (error) {
+          console.warn("Speaking answer could not be saved.", error);
+        }
+      });
+    });
+
+    // 5. INTERVIEW QUESTION WHEEL
+    const interviewQuestions = [
+      "Who usually does the shopping in your family?",
+      "What can you buy in your nearest shopping centre?",
+      "How often do you usually go shopping?",
+      "Why are shopping centres so popular nowadays?",
+      "Why do some people hate shopping?",
+      "What time would you recommend that busy people should go shopping?",
+
+      "What colour of clothes do you prefer wearing?",
+      "What clothes do you usually wear?",
+      "How often do you go shopping for clothes?",
+      "Who do you usually go shopping with?",
+      "Do you have to wear a school uniform? If so, what is it like?",
+      "Does a career as a fashion designer attract you or not? Why?",
+
+      "What is your favourite fruit?",
+      "What do you usually have for breakfast?",
+      "Where do you usually have lunch on weekdays?",
+      "Is there any food you do not like?",
+      "What dishes can you cook?",
+      "What food would you recommend to a teenager who wants to be healthy?",
+      "How many meals a day do you usually have?",
+      "What is your favorite food?",
+      "What do you usually have for lunch at school?",
+      "Do you prefer fast food or home-made food? Why?",
+      "Would you like to take part in a TV cookery show, for example, cooking your favorite dish in a TV studio? Why?",
+      "What would you recommend to a teenager who wants to keep fit?",
+
+      "What is the best present you have ever had?",
+      "What other holidays and special days are celebrated in your family?",
+      "What from your point of view is the best present for a teenager?",
+      "What would you recommend to a person who has got a present she or he doesn't need?"
+    ];
+
+    const questionElement = root.querySelector("#interview-question");
+    const progressElement = root.querySelector("#interview-progress");
+    const nextButton = root.querySelector("#interview-next");
+    const resetButton = root.querySelector("#interview-reset");
+
+    let remainingQuestions = [...interviewQuestions];
+    let answeredQuestions = 0;
+
+    function updateInterviewProgress() {
+      if (progressElement) {
+        progressElement.textContent =
+          `Questions answered: ${answeredQuestions} / ${interviewQuestions.length}`;
+      }
+    }
+
+    function showRandomQuestion() {
+      if (!questionElement || remainingQuestions.length === 0) {
+        return;
+      }
+
+      const randomIndex = Math.floor(
+        Math.random() * remainingQuestions.length
+      );
+
+      const selectedQuestion = remainingQuestions.splice(randomIndex, 1)[0];
+
+      questionElement.textContent = selectedQuestion;
+      answeredQuestions++;
+
+      updateInterviewProgress();
+
+      if (remainingQuestions.length === 0 && nextButton) {
+        nextButton.textContent = "All questions completed";
+        nextButton.disabled = true;
+      }
+    }
+
+    if (nextButton) {
+      nextButton.addEventListener("click", showRandomQuestion);
+    }
+
+    if (resetButton) {
+      resetButton.addEventListener("click", () => {
+        remainingQuestions = [...interviewQuestions];
+        answeredQuestions = 0;
+
+        if (questionElement) {
+          questionElement.textContent =
+            "Нажми «Get a question», чтобы начать интервью.";
+        }
+
+        if (nextButton) {
+          nextButton.disabled = false;
+          nextButton.textContent = "🎡 Get a question";
+        }
+
+        updateInterviewProgress();
+      });
+    }
+
+    updateInterviewProgress();
+
+    // 6. 40-SECOND INTERVIEW TIMER
+    const timerDisplay = root.querySelector("#interview-time");
+    const timerFill = root.querySelector("#interview-timer-fill");
+    const startTimerButton = root.querySelector("#interview-start");
+    const stopTimerButton = root.querySelector("#interview-stop");
+    const restartTimerButton = root.querySelector("#interview-restart");
+
+    const timerDuration = 40;
+    let secondsLeft = timerDuration;
+    let timerInterval = null;
+
+    function renderTimer() {
+      if (timerDisplay) {
+        const seconds = String(secondsLeft).padStart(2, "0");
+        timerDisplay.textContent = `00:${seconds}`;
+      }
+
+      if (timerFill) {
+        timerFill.style.width =
+          `${(secondsLeft / timerDuration) * 100}%`;
+      }
+    }
+
+    function stopTimer() {
+      if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function startTimer() {
+      if (timerInterval !== null) {
+        return;
+      }
+
+      if (secondsLeft <= 0) {
+        secondsLeft = timerDuration;
+        renderTimer();
+      }
+
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        renderTimer();
+
+        if (secondsLeft <= 0) {
+          stopTimer();
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      stopTimer();
+      secondsLeft = timerDuration;
+      renderTimer();
+    }
+
+    if (startTimerButton) {
+      startTimerButton.addEventListener("click", startTimer);
+    }
+
+    if (stopTimerButton) {
+      stopTimerButton.addEventListener("click", stopTimer);
+    }
+
+    if (restartTimerButton) {
+      restartTimerButton.addEventListener("click", resetTimer);
+    }
+
+    renderTimer();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSpeakingSection);
+  } else {
+    initSpeakingSection();
+  }
+})();
+
+
+/* =========================================
+   REVIEW — BLOCK Д · SHOPPING
+   Auto-check, feedback and local saving
+========================================= */
+
+(() => {
+  const reviewPrefix = "shoppingEdit_review_";
+
+  const reviewAnswers = {
+    vocabulary: {
+      "vocab-1": ["receipt"],
+      "vocab-2": ["affordable"],
+      "vocab-3": ["shop assistant"],
+      "vocab-4": ["pocket money"],
+      "vocab-5": ["discount"],
+      "vocab-6a": ["try"],
+      "vocab-6b": ["on"],
+      "vocab-7": ["queue"],
+      "vocab-8": ["save"],
+      "vocab-9": ["ingredients"],
+      "vocab-10": ["waste"]
+    },
+
+    grammar: {
+      "grammar-1": "a",
+      "grammar-2": "b",
+      "grammar-3": "b",
+      "grammar-4": "b",
+      "grammar-5": "a",
+      "grammar-6": "b",
+      "grammar-7": "b",
+      "grammar-8": "c",
+      "grammar-9": "b",
+      "grammar-10": "a"
+    },
+
+    wordFormation: {
+      "word-1": "choice",
+      "word-2": "friendly",
+      "word-3": "afford",
+      "word-4": "designer",
+      "word-5": "carefully",
+      "word-6": "popularity",
+      "word-7": "comfortable",
+      "word-8": "cook",
+      "word-9": "traditional",
+      "word-10": "convenient"
+    },
+
+    reading: {
+      "reading-1": "T",
+      "reading-2": "F",
+      "reading-3": "T",
+      "reading-4": "T",
+      "reading-5": "F"
+    }
+  };
+
+  const grammarFeedback = {
+    "grammar-1": "Present Simple: a regular action; the marker is usually.",
+    "grammar-2": "Present Continuous: the action is happening now; the marker is Look!",
+    "grammar-3": "Past Continuous: an action in progress when another event happened.",
+    "grammar-4": "Past Simple: yesterday indicates a finished past time.",
+    "grammar-5": "Present Perfect: life experience. Has been to means 'visited and returned'.",
+    "grammar-6": "Present Perfect: the action is complete and its result is important now; the marker is already.",
+    "grammar-7": "Use an before apple because the word begins with a vowel sound.",
+    "grammar-8": "Use on with floors: on the second floor.",
+    "grammar-9": "Use the ordinal number third.",
+    "grammar-10": "Shouldn't is used to give advice."
+  };
+
+  const wordFormationFeedback = {
+    "word-1": "A noun is needed after a great.",
+    "word-2": "An adjective describing the shop assistant is needed.",
+    "word-3": "Use the verb after the modal verb can't.",
+    "word-4": "A noun naming a profession is needed.",
+    "word-5": "An adverb describing how we should think is needed.",
+    "word-6": "A noun is needed after the article the.",
+    "word-7": "An adjective describing the shoes is needed.",
+    "word-8": "A noun naming a person who cooks is needed.",
+    "word-9": "An adjective describing the food is needed.",
+    "word-10": "An adjective is needed after is very."
+  };
+
+  const readingFeedback = {
+    "reading-1": "True — the first paragraph says Emma is fifteen years old.",
+    "reading-2": "False — the text says she used to buy clothes every month, not every week.",
+    "reading-3": "True — Emma changed her habits last year and began visiting charity shops.",
+    "reading-4": "True — her family plans meals for the week.",
+    "reading-5": "False — Emma is saving money for hiking boots, not trainers."
+  };
+
+  function normalizeReviewAnswer(value) {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+  }
+
+  function saveReviewValue(key, value) {
+    try {
+      localStorage.setItem(reviewPrefix + key, value);
+    } catch (error) {
+      console.warn("Review saving is unavailable.", error);
+    }
+  }
+
+  function getSavedReviewValue(key) {
+    try {
+      return localStorage.getItem(reviewPrefix + key);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function restoreReviewAnswers(review) {
+    review.querySelectorAll("[data-review-save]").forEach(field => {
+      const key = field.dataset.reviewSave;
+      const saved = getSavedReviewValue(key);
+
+      if (saved === null) return;
+
+      if (field.type === "radio") {
+        field.checked = field.value === saved;
+      } else {
+        field.value = saved;
+      }
+    });
+
+    ["vocabulary", "grammar", "word-formation", "reading"].forEach(task => {
+      const savedScore = getSavedReviewValue("score-" + task);
+      const result = document.getElementById(
+        "review-" + task + "-result"
+      );
+
+      if (savedScore !== null && result) {
+        result.dataset.score = savedScore;
+        result.textContent =
+          "Previously checked result: " + savedScore +
+          " points. You can check again after changing your answers.";
+      }
+    });
+
+    updateReviewTotal();
+  }
+
+  function clearReviewFeedback(container) {
+    container.querySelectorAll(
+      ".review-correct, .review-wrong"
+    ).forEach(element => {
+      element.classList.remove("review-correct", "review-wrong");
+    });
+
+    container.querySelectorAll(".review-answer-comment").forEach(element => {
+      element.remove();
+    });
+  }
+
+  function addReviewComment(container, message) {
+    const comment = document.createElement("p");
+    comment.className = "review-answer-comment";
+    comment.textContent = message;
+    container.appendChild(comment);
+  }
+
+  function showReviewResult(task, score, maximum, answered, total) {
+    const result = document.getElementById(
+      "review-" + task + "-result"
+    );
+
+    if (!result) return;
+
+    result.dataset.score = String(score);
+    saveReviewValue("score-" + task, String(score));
+
+    if (answered < total) {
+      result.textContent =
+        "Answered: " + answered + "/" + total +
+        ". Current score: " + score + "/" + maximum +
+        ". Complete the remaining questions and check again.";
+    } else {
+      result.textContent =
+        "Your result: " + score + "/" + maximum + " points.";
+    }
+
+    updateReviewTotal();
+  }
+
+  function updateReviewTotal() {
+    const tasks = [
+      "vocabulary",
+      "grammar",
+      "word-formation",
+      "reading"
+    ];
+
+    let totalScore = 0;
+
+    tasks.forEach(task => {
+      const result = document.getElementById(
+        "review-" + task + "-result"
+      );
+
+      if (result && result.dataset.score !== undefined) {
+        totalScore += Number(result.dataset.score) || 0;
+      }
+    });
+
+    const scoreElement = document.getElementById("review-total-score");
+    const progressElement = document.getElementById("review-progress-fill");
+
+    if (scoreElement) {
+      scoreElement.textContent = totalScore + " / 35";
+    }
+
+    if (progressElement) {
+      progressElement.style.width = (totalScore / 35 * 100) + "%";
+    }
+  }
+
+  /* TASK 1 — VOCABULARY */
+
+  function checkReviewVocabulary() {
+    const section = document.getElementById("review-vocabulary");
+    if (!section) return;
+
+    clearReviewFeedback(section);
+
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(reviewAnswers.vocabulary).forEach(([key, accepted]) => {
+      const input = section.querySelector(
+        '[data-review-answer="' + key + '"]'
+      );
+
+      if (!input) return;
+
+      const value = normalizeReviewAnswer(input.value);
+      const wrapper = input.closest(".review-fill-question");
+
+      if (!value) return;
+
+      answered++;
+
+      if (accepted.includes(value)) {
+        score++;
+        wrapper.classList.add("review-correct");
+      } else {
+        wrapper.classList.add("review-wrong");
+        addReviewComment(
+          wrapper,
+          "Correct answer: " + accepted[0] + "."
+        );
+      }
+    });
+
+    showReviewResult("vocabulary", score, 10, answered, 10);
+  }
+
+  /* TASK 2 — GRAMMAR */
+
+  function checkReviewGrammar() {
+    const section = document.getElementById("review-grammar");
+    if (!section) return;
+
+    clearReviewFeedback(section);
+
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(reviewAnswers.grammar).forEach(([key, correct]) => {
+      const question = section.querySelector(
+        '[data-review-question="' + key + '"]'
+      );
+
+      const selected = section.querySelector(
+        'input[name="' + key + '"]:checked'
+      );
+
+      if (!question || !selected) return;
+
+      answered++;
+
+      if (selected.value === correct) {
+        score++;
+        question.classList.add("review-correct");
+      } else {
+        question.classList.add("review-wrong");
+
+        const correctInput = section.querySelector(
+          'input[name="' + key + '"][value="' + correct + '"]'
+        );
+
+        const correctLabel = correctInput
+          ? correctInput.parentElement.textContent.trim()
+          : correct;
+
+        addReviewComment(
+          question,
+          "Correct answer: " + correctLabel + ". " +
+          grammarFeedback[key]
+        );
+      }
+    });
+
+    showReviewResult("grammar", score, 10, answered, 10);
+  }
+
+  /* TASK 3 — WORD FORMATION */
+
+  function checkReviewWordFormation() {
+    const section = document.getElementById("review-word-formation");
+    if (!section) return;
+
+    clearReviewFeedback(section);
+
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(reviewAnswers.wordFormation).forEach(([key, correct]) => {
+      const input = section.querySelector(
+        '[data-review-answer="' + key + '"]'
+      );
+
+      if (!input) return;
+
+      const value = normalizeReviewAnswer(input.value);
+      const wrapper = input.closest(".review-fill-question");
+
+      if (!value) return;
+
+      answered++;
+
+      if (value === correct) {
+        score++;
+        wrapper.classList.add("review-correct");
+      } else {
+        wrapper.classList.add("review-wrong");
+
+        addReviewComment(
+          wrapper,
+          "Correct answer: " + correct + ". " +
+          wordFormationFeedback[key]
+        );
+      }
+    });
+
+    showReviewResult("word-formation", score, 10, answered, 10);
+  }
+
+  /* TASK 4 — READING */
+
+  function checkReviewReading() {
+    const section = document.getElementById("review-reading");
+    if (!section) return;
+
+    clearReviewFeedback(section);
+
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(reviewAnswers.reading).forEach(([key, correct]) => {
+      const question = section.querySelector(
+        '[data-review-question="' + key + '"]'
+      );
+
+      const selected = section.querySelector(
+        'input[name="' + key + '"]:checked'
+      );
+
+      if (!question || !selected) return;
+
+      answered++;
+
+      if (selected.value === correct) {
+        score++;
+        question.classList.add("review-correct");
+      } else {
+        question.classList.add("review-wrong");
+
+        addReviewComment(
+          question,
+          "Correct answer: " + correct + ". " +
+          readingFeedback[key]
+        );
+      }
+    });
+
+    showReviewResult("reading", score, 5, answered, 5);
+  }
+
+  /* INITIALIZATION */
+
+  function initReviewSection() {
+    const review = document.getElementById("page-review");
+
+    if (!review || review.dataset.reviewInitialized === "true") return;
+
+    review.dataset.reviewInitialized = "true";
+
+    restoreReviewAnswers(review);
+
+    review.addEventListener("input", event => {
+      const field = event.target;
+
+      if (field.matches("[data-review-save]") && field.type !== "radio") {
+        saveReviewValue(field.dataset.reviewSave, field.value);
+      }
+    });
+
+    review.addEventListener("change", event => {
+      const field = event.target;
+
+      if (field.matches('input[type="radio"][data-review-save]')) {
+        if (field.checked) {
+          saveReviewValue(field.dataset.reviewSave, field.value);
+        }
+      }
+    });
+
+    review.querySelectorAll("[data-review-check]").forEach(button => {
+      button.addEventListener("click", () => {
+        const task = button.dataset.reviewCheck;
+
+        if (task === "vocabulary") checkReviewVocabulary();
+        if (task === "grammar") checkReviewGrammar();
+        if (task === "word-formation") checkReviewWordFormation();
+        if (task === "reading") checkReviewReading();
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initReviewSection);
+  } else {
+    initReviewSection();
+  }
+})();
+
+
+/* =========================================
+   CHECKLIST — SAVING AND PROGRESS
+========================================= */
+
+(() => {
+  function initChecklist() {
+    const root = document.getElementById("page-checklist");
+
+    if (!root || root.dataset.checklistInitialized === "true") {
+      return;
+    }
+
+    root.dataset.checklistInitialized = "true";
+
+    const checkboxes = Array.from(
+      root.querySelectorAll(".course-check")
+    );
+
+    const completedDisplay = root.querySelector("#checklist-completed");
+    const progressFill = root.querySelector("#checklist-progress-fill");
+    const progressMessage = root.querySelector("#checklist-progress-message");
+    const resetButton = root.querySelector("#checklist-reset");
+
+    const storagePrefix = "shoppingEditChecklist_";
+
+    function updateChecklistProgress() {
+      const completed = checkboxes.filter(
+        checkbox => checkbox.checked
+      ).length;
+
+      const total = checkboxes.length;
+      const percentage = total ? (completed / total) * 100 : 0;
+
+      if (completedDisplay) {
+        completedDisplay.textContent = completed;
+      }
+
+      if (progressFill) {
+        progressFill.style.width = `${percentage}%`;
+      }
+
+      if (progressMessage) {
+        if (completed === total) {
+          progressMessage.textContent =
+            "Великолепно! Ты завершил(а) весь план блока Shopping! 👑";
+        } else if (completed >= 7) {
+          progressMessage.textContent =
+            "Ты уже почти у цели! Осталось совсем немного! 💗";
+        } else if (completed >= 4) {
+          progressMessage.textContent =
+            "Отличный прогресс! Продолжай в том же духе! ✨";
+        } else if (completed > 0) {
+          progressMessage.textContent =
+            "Хорошее начало! Каждый пройденный раздел приближает тебя к цели! 🌸";
+        } else {
+          progressMessage.textContent =
+            "Твоё путешествие по теме Shopping начинается! 💗";
+        }
+      }
+    }
+
+    // Восстанавливаем сохранённые отметки.
+    checkboxes.forEach(checkbox => {
+      const id = checkbox.dataset.checkId;
+      const storageKey = storagePrefix + id;
+
+      try {
+        checkbox.checked = localStorage.getItem(storageKey) === "true";
+      } catch (error) {
+        console.warn("Не удалось восстановить отметку чек-листа.", error);
+      }
+
+      // Сохраняем каждое изменение автоматически.
+      checkbox.addEventListener("change", () => {
+        try {
+          localStorage.setItem(storageKey, String(checkbox.checked));
+        } catch (error) {
+          console.warn("Не удалось сохранить отметку чек-листа.", error);
+        }
+
+        updateChecklistProgress();
+      });
+    });
+
+    // Сброс всех отметок.
+    if (resetButton) {
+      resetButton.addEventListener("click", () => {
+        const confirmed = window.confirm(
+          "Ты действительно хочешь сбросить все отметки чек-листа?"
+        );
+
+        if (!confirmed) return;
+
+        checkboxes.forEach(checkbox => {
+          checkbox.checked = false;
+
+          try {
+            localStorage.removeItem(
+              storagePrefix + checkbox.dataset.checkId
+            );
+          } catch (error) {
+            console.warn("Не удалось сбросить отметку.", error);
+          }
+        });
+
+        updateChecklistProgress();
+      });
+    }
+
+    updateChecklistProgress();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initChecklist);
+  } else {
+    initChecklist();
+  }
+})();
+
+/* =========================================
+   HOMEWORK — BLOCK Д · LISTENING
+   Saving answers and automatic checking
+========================================= */
+
+(() => {
+  const homeworkStoragePrefix = "shoppingEdit_homework_";
+
+  /*
+    ANSWER KEYS
+    Source: "для раздела домашшка.docx"
+  */
+
+  const homeworkListeningKeys = {
+    "listen1-mc": {
+      "listen1-1": "2",
+      "listen1-2": "2",
+      "listen1-3": "1",
+      "listen1-4": "3"
+    },
+
+    "listen1-match": {
+      "A": "5",
+      "B": "1",
+      "C": "6",
+      "D": "3",
+      "E": "2"
+    },
+
+    "listen1-table": {
+      "listen1-table-1": "twenty",
+      "listen1-table-2": "canada",
+      "listen1-table-3": "pizza",
+      "listen1-table-4": "dentist",
+      "listen1-table-5": "cooking",
+      "listen1-table-6": "train"
+    },
+
+    "listen2-mc": {
+      "listen2-1": "1",
+      "listen2-2": "3",
+      "listen2-3": "3",
+      "listen2-4": "2"
+    },
+
+    "listen2-match": {
+      "A": "1",
+      "B": "5",
+      "C": "3",
+      "D": "6",
+      "E": "2"
+    },
+
+    "listen2-table": {
+      "listen2-table-1": "geography",
+      "listen2-table-2": "photography",
+      "listen2-table-3": "eighteen",
+      "listen2-table-4": "spanish",
+      "listen2-table-5": "volleyball",
+      "listen2-table-6": "horse"
+    }
+  };
+
+  function normalizeHomeworkValue(value) {
+    return String(value)
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+  }
+
+  function saveHomeworkValue(key, value) {
+    try {
+      localStorage.setItem(
+        homeworkStoragePrefix + key,
+        value
+      );
+    } catch (error) {
+      console.warn("Homework answer could not be saved.", error);
+    }
+  }
+
+  function getHomeworkValue(key) {
+    try {
+      return localStorage.getItem(
+        homeworkStoragePrefix + key
+      );
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function restoreHomeworkAnswers(section) {
+    section.querySelectorAll("[data-homework-save]").forEach(field => {
+      const key = field.dataset.homeworkSave;
+      const savedValue = getHomeworkValue(key);
+
+      if (savedValue === null) return;
+
+      if (field.type === "radio") {
+        field.checked = field.value === savedValue;
+      } else {
+        field.value = savedValue;
+      }
+    });
+
+    section.querySelectorAll(
+      'input[type="radio"][name]'
+    ).forEach(field => {
+      const savedValue = getHomeworkValue(field.name);
+
+      if (savedValue !== null) {
+        field.checked = field.value === savedValue;
+      }
+    });
+  }
+
+  function clearHomeworkFeedback(task) {
+    task.querySelectorAll(
+      ".homework-correct, .homework-wrong, .homework-unanswered"
+    ).forEach(element => {
+      element.classList.remove(
+        "homework-correct",
+        "homework-wrong",
+        "homework-unanswered"
+      );
+    });
+
+    task.querySelectorAll(".homework-feedback").forEach(element => {
+      element.remove();
+    });
+  }
+
+  function addHomeworkFeedback(container, text) {
+    const feedback = document.createElement("p");
+    feedback.className = "homework-feedback";
+    feedback.textContent = text;
+    container.appendChild(feedback);
+  }
+
+  function showHomeworkResult(resultId, score, total, answered) {
+    const result = document.getElementById(resultId);
+    if (!result) return;
+
+    if (answered < total) {
+      result.textContent =
+        "Проверено: " + answered + " из " + total +
+        ". Правильных ответов: " + score +
+        ". Заполни оставшиеся поля и проверь ещё раз.";
+    } else {
+      result.textContent =
+        "Результат: " + score + " из " + total + " правильных ответов.";
+    }
+  }
+
+  /* MULTIPLE CHOICE — TASKS 1–4 */
+
+  function checkHomeworkMultipleChoice(taskId) {
+    const task = document.querySelector(
+      '[data-homework-check="' + taskId + '"]'
+    )?.closest(".homework-task");
+
+    if (!task) return;
+
+    clearHomeworkFeedback(task);
+
+    const keys = homeworkListeningKeys[taskId];
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(keys).forEach(([questionName, correctAnswer]) => {
+      const question = task.querySelector(
+        '[data-homework-question="' + questionName + '"]'
+      );
+
+      const selected = task.querySelector(
+        'input[name="' + questionName + '"]:checked'
+      );
+
+      if (!question) return;
+
+      if (!selected) {
+        question.classList.add("homework-unanswered");
+        addHomeworkFeedback(question, "Ответ пока не выбран.");
+        return;
+      }
+
+      answered++;
+
+      if (selected.value === correctAnswer) {
+        score++;
+        question.classList.add("homework-correct");
+        addHomeworkFeedback(question, "✓ Правильно!");
+      } else {
+        question.classList.add("homework-wrong");
+        addHomeworkFeedback(
+          question,
+          "Правильный ответ: " + correctAnswer + "."
+        );
+      }
+    });
+
+    showHomeworkResult(
+      "result-" + taskId,
+      score,
+      Object.keys(keys).length,
+      answered
+    );
+  }
+
+  /* MATCHING — TASK 5 */
+
+  function checkHomeworkMatching(taskId) {
+    const button = document.querySelector(
+      '[data-homework-check="' + taskId + '"]'
+    );
+
+    const task = button?.closest(".homework-subtask");
+    if (!task) return;
+
+    clearHomeworkFeedback(task);
+
+    const keys = homeworkListeningKeys[taskId];
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(keys).forEach(([letter, correctAnswer]) => {
+      const select = task.querySelector(
+        '[data-homework-save="' +
+        taskId.replace("-match", "-match-" + letter) +
+        '"]'
+      );
+
+      if (!select) return;
+
+      const wrapper = select.closest("label");
+
+      if (!select.value) {
+        wrapper.classList.add("homework-unanswered");
+        addHomeworkFeedback(wrapper, "Выбери номер.");
+        return;
+      }
+
+      answered++;
+
+      if (select.value === correctAnswer) {
+        score++;
+        wrapper.classList.add("homework-correct");
+        addHomeworkFeedback(wrapper, "✓");
+      } else {
+        wrapper.classList.add("homework-wrong");
+        addHomeworkFeedback(
+          wrapper,
+          "Правильный ответ: " + correctAnswer + "."
+        );
+      }
+    });
+
+    showHomeworkResult(
+      "result-" + taskId,
+      score,
+      Object.keys(keys).length,
+      answered
+    );
+  }
+
+  /* TABLE — TASK 6 */
+
+  function checkHomeworkTable(taskId) {
+    const button = document.querySelector(
+      '[data-homework-check="' + taskId + '"]'
+    );
+
+    const task = button?.closest(".homework-subtask");
+    if (!task) return;
+
+    clearHomeworkFeedback(task);
+
+    const keys = homeworkListeningKeys[taskId];
+    let score = 0;
+    let answered = 0;
+
+    Object.entries(keys).forEach(([fieldKey, correctAnswer]) => {
+      const input = task.querySelector(
+        '[data-homework-save="' + fieldKey + '"]'
+      );
+
+      if (!input) return;
+
+      const wrapper = input.closest("label");
+      const value = normalizeHomeworkValue(input.value);
+
+      if (!value) {
+        wrapper.classList.add("homework-unanswered");
+        addHomeworkFeedback(wrapper, "Впиши ответ.");
+        return;
+      }
+
+      answered++;
+
+      if (value === correctAnswer) {
+        score++;
+        wrapper.classList.add("homework-correct");
+        addHomeworkFeedback(wrapper, "✓ Правильно!");
+      } else {
+        wrapper.classList.add("homework-wrong");
+        addHomeworkFeedback(
+          wrapper,
+          "Правильный ответ: " + correctAnswer + "."
+        );
+      }
+    });
+
+    showHomeworkResult(
+      "result-" + taskId,
+      score,
+      Object.keys(keys).length,
+      answered
+    );
+  }
+
+  /* INITIALIZATION */
+
+  function initHomeworkListening() {
+    const section = document.getElementById("page-homework");
+
+    if (!section || section.dataset.homeworkListeningReady === "true") {
+      return;
+    }
+
+    section.dataset.homeworkListeningReady = "true";
+
+    restoreHomeworkAnswers(section);
+
+    section.addEventListener("input", event => {
+      const field = event.target;
+
+      if (field.matches("[data-homework-save]")) {
+        saveHomeworkValue(
+          field.dataset.homeworkSave,
+          field.value
+        );
+      }
+    });
+
+    section.addEventListener("change", event => {
+      const field = event.target;
+
+      if (field.matches("[data-homework-save]")) {
+        saveHomeworkValue(
+          field.dataset.homeworkSave,
+          field.value
+        );
+      }
+
+      if (field.matches('input[type="radio"][name]')) {
+        if (field.checked) {
+          saveHomeworkValue(field.name, field.value);
+        }
+      }
+    });
+
+    section.querySelectorAll("[data-homework-check]").forEach(button => {
+      button.addEventListener("click", () => {
+        const taskId = button.dataset.homeworkCheck;
+
+        if (taskId.endsWith("-mc")) {
+          checkHomeworkMultipleChoice(taskId);
+        } else if (taskId.endsWith("-match")) {
+          checkHomeworkMatching(taskId);
+        } else if (taskId.endsWith("-table")) {
+          checkHomeworkTable(taskId);
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initHomeworkListening
+    );
+  } else {
+    initHomeworkListening();
+  }
+})();
+
+/* =========================================
+   HOMEWORK — READING: AUTO CHECK
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const readingAnswers = {
+    task1: {
+      1: "F",
+      2: "A",
+      3: "",
+      4: "B",
+      5: "C",
+      6: "E",
+      7: "D"
+    },
+
+    task2: {
+      1: "F",
+      2: "A",
+      3: "",
+      4: "B",
+      5: "C",
+      6: "E",
+      7: "D"
+    },
+
+    task3: {
+      1: "True",
+      2: "Not Stated",
+      3: "True",
+      4: "False",
+      5: "False",
+      6: "True",
+      7: "Not Stated"
+    },
+
+    task4: {
+      1: "True",
+      2: "False",
+      3: "Not Stated",
+      4: "False",
+      5: "True",
+      6: "False",
+      7: "Not Stated"
+    }
+  };
+
+  document.querySelectorAll("[data-check-reading]").forEach(button => {
+    button.addEventListener("click", () => {
+      const task = button.dataset.checkReading;
+      const answers = readingAnswers[task];
+
+      if (!answers) return;
+
+      const fields = document.querySelectorAll(
+        `[data-hw-reading="${task}"]`
+      );
+
+      const result = document.getElementById(
+        `hw-reading-result-${task}`
+      );
+
+      if (!result || fields.length === 0) return;
+
+      let correct = 0;
+      let total = 0;
+      let unanswered = 0;
+
+      fields.forEach(field => {
+        const number = Number(field.id.match(/-(\d+)$/)?.[1]);
+
+        if (!number || !(number in answers)) return;
+
+        const expected = String(answers[number]).trim().toLowerCase();
+        const actual = String(field.value).trim().toLowerCase();
+
+        field.classList.remove("hw-correct", "hw-incorrect");
+
+        // В заданиях 1 и 2 третий вопрос лишний:
+        // его нужно оставить без ответа.
+        if (expected === "") {
+          total++;
+
+          if (actual === "") {
+            correct++;
+            field.classList.add("hw-correct");
+          } else {
+            field.classList.add("hw-incorrect");
+          }
+
+          return;
+        }
+
+        total++;
+
+        if (actual === "") {
+          unanswered++;
+          field.classList.add("hw-incorrect");
+        } else if (actual === expected) {
+          correct++;
+          field.classList.add("hw-correct");
+        } else {
+          field.classList.add("hw-incorrect");
+        }
+      });
+
+      const percentage = Math.round((correct / total) * 100);
+
+      result.classList.remove(
+        "hw-result-success",
+        "hw-result-error"
+      );
+
+      if (correct === total) {
+        result.classList.add("hw-result-success");
+        result.textContent =
+          `🎉 Отлично! Правильных ответов: ${correct} из ${total}.`;
+      } else {
+        result.classList.add("hw-result-error");
+
+        let message =
+          `Правильных ответов: ${correct} из ${total} (${percentage}%).`;
+
+        if (unanswered > 0) {
+          message += ` Не заполнено ответов: ${unanswered}.`;
+        }
+
+        message += " Проверь выделенные поля и попробуй ещё раз.";
+        result.textContent = message;
+      }
+    });
+  });
+});
+
+/* =========================================
+   HOMEWORK — GRAMMAR: ANSWER CHECK
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const grammarHomework = {
+    1: {
+      answers: {
+        1: ["leaves"],
+        2: ["were"],
+        3: ["the best"],
+        4: ["her"],
+        5: ["bought"],
+        6: ["did not hear", "didn't hear"],
+        7: ["is making"],
+        8: ["was decorated"],
+        9: ["liked"]
+      },
+      comments: {
+        1: "Множественное число от leaf образуется заменой -f на -ves.",
+        2: "Past Simple глагола to be: речь идёт о множестве вещей, которые были характерны для осени.",
+        3: "Превосходная степень прилагательного good — the best.",
+        4: "Притяжательное местоимение перед существительным mother.",
+        5: "Past Simple: действие произошло однажды в прошлом (one day).",
+        6: "Past Simple в отрицательной форме.",
+        7: "Present Continuous: мать чувствует запах пирога и спрашивает, кто готовит его сейчас.",
+        8: "Past Simple Passive: пирог был украшен орехами и цветным сахаром.",
+        9: "Past Simple: передаётся реакция матери после того, как она попробовала пирог."
+      }
+    },
+
+    2: {
+      answers: {
+        1: ["did not like", "didn't like"],
+        2: ["will lose"],
+        3: ["went"],
+        4: ["best"],
+        5: ["was"],
+        6: ["policemen"],
+        7: ["him"],
+        8: ["knew"],
+        9: ["had been bought"]
+      },
+      comments: {
+        1: "Past Simple: привычка или отношение начальника в прошлом.",
+        2: "First Conditional: If + Present Simple, will + infinitive.",
+        3: "Past Simple: регулярное действие в прошлом (sometimes).",
+        4: "Превосходная степень good — best. Конструкция: the best job he had ever had.",
+        5: "Past Simple: описывается звук после столкновения.",
+        6: "Множественное число: policeman → policemen.",
+        7: "Объектное местоимение после глагола take: It took him 20 minutes.",
+        8: "После I wish для выражения сожаления о настоящем используется Past Simple.",
+        9: "Past Perfect Passive: покупка автомобиля произошла раньше момента, о котором говорит начальник."
+      }
+    },
+
+    3: {
+      answers: {
+        1: ["do not want", "don't want"],
+        2: ["their"],
+        3: ["gave"],
+        4: ["are"],
+        5: ["could"],
+        6: ["fifth"],
+        7: ["children"],
+        8: ["better"],
+        9: ["liked"]
+      },
+      comments: {
+        1: "Present Simple: Tracey говорит о своём нежелании идти в школу сегодня.",
+        2: "Притяжательное местоимение перед существительным family.",
+        3: "Past Simple: отец обнял дочь в прошлом.",
+        4: "Present Simple в придаточном времени с when: When your classes are over.",
+        5: "После I wish для выражения желания изменить настоящую ситуацию используется Past Simple; форма can — could.",
+        6: "Порядковое числительное: fifth grade.",
+        7: "Неправильная форма множественного числа: child → children.",
+        8: "Сравнительная степень good — better: Tracey почувствовала себя немного лучше.",
+        9: "Past Simple: передаётся ответ Tracey о прошедшем школьном дне."
+      }
+    },
+
+    4: {
+      answers: {
+        1: ["first"],
+        2: ["gets"],
+        3: ["cannot", "can't"],
+        4: ["babies"],
+        5: ["had"],
+        6: ["better"],
+        7: ["haven't found", "have not found"],
+        8: ["could"],
+        9: ["was raining"]
+      },
+      comments: {
+        1: "One → first — порядковое числительное: «первое прозвище».",
+        2: "Present Simple: общее описание реакции кожи на солнце.",
+        3: "Отрицательная форма модального глагола can: «я не могу узнать себя».",
+        4: "Множественное число от baby: babies.",
+        5: "Past Simple: в детстве маме приходилось наносить защитный крем.",
+        6: "Сравнительная степень от good: better.",
+        7: "Present Perfect: до настоящего момента лекарство не найдено.",
+        8: "I wish + Past Simple — желание, которое невозможно или маловероятно осуществить сейчас.",
+        9: "Past Continuous: дождь шёл в момент рождения рассказчицы."
+      }
+    },
+
+    5: {
+      answers: {
+        1: ["haven't heard", "have not heard"],
+        2: ["knew"],
+        3: ["centuries"],
+        4: ["left"],
+        5: ["was spoken"],
+        6: ["twentieth"],
+        7: ["is offered"],
+        8: ["most difficult"],
+        9: ["will survive"]
+      },
+      comments: {
+        1: "Present Perfect с of: «вы, наверное, не слышали о корнском языке».",
+        2: "I wish + Past Simple — сожаление о том, что сейчас не знаешь язык.",
+        3: "Множественное число: centuries ago — «столетия назад».",
+        4: "Past Simple от leave: историческое событие в прошлом.",
+        5: "Past Simple Passive: язык использовался / на нём говорили до конца XVIII века.",
+        6: "Порядковое числительное: the twentieth century.",
+        7: "Present Simple Passive: язык предлагается как предмет изучения в университетах.",
+        8: "Превосходная степень: the most difficult language.",
+        9: "Future Simple: прогноз о будущем языка."
+      }
+    },
+
+    6: {
+      answers: {
+        1: ["her"],
+        2: ["parties"],
+        3: ["were written"],
+        4: ["agreed"],
+        5: ["will help"],
+        6: ["were"],
+        7: ["couldn't", "could not"],
+        8: ["knew"],
+        9: ["kinder"]
+      },
+      comments: {
+        1: "Притяжательное местоимение: her unusual gift — её необычный талант.",
+        2: "Множественное число от party: parties and events.",
+        3: "Past Simple Passive: сценарии и программы были написаны Джейн. Подлежащее во множественном числе.",
+        4: "Past Simple: Джейн сразу согласилась.",
+        5: "Future Simple: обещание / готовность помочь.",
+        6: "Согласование времён в косвенном вопросе: what her favourite films, colours, and flowers were.",
+        7: "Прошедшая форма can't: рассказчик не мог ответить на большинство вопросов.",
+        8: "Second Conditional: If + Past Simple, would + infinitive.",
+        9: "Сравнительная степень от kind: «добрее к ним»."
+      }
+    }
+  };
+
+  function normalizeGrammarAnswer(value) {
+    return String(value)
+      .trim()
+      .toLowerCase()
+      .replace(/[’‘]/g, "'")
+      .replace(/\s+/g, " ");
+  }
+
+  document.querySelectorAll("[data-hg-check]").forEach(button => {
+    button.addEventListener("click", () => {
+      const taskNumber = button.dataset.hgCheck;
+      const task = grammarHomework[taskNumber];
+
+      if (!task) return;
+
+      const fields = document.querySelectorAll(
+        `[data-hg-task="${taskNumber}"]`
+      );
+
+      const result = document.getElementById(
+        `hg-result-${taskNumber}`
+      );
+
+      if (!result || fields.length === 0) return;
+
+      let correct = 0;
+      let total = 0;
+      let feedback = [];
+
+      fields.forEach(field => {
+        const number = field.dataset.hgN;
+        const possibleAnswers = task.answers[number];
+
+        if (!possibleAnswers) return;
+
+        total++;
+
+        const userAnswer = normalizeGrammarAnswer(field.value);
+        const isCorrect = possibleAnswers.some(answer =>
+          normalizeGrammarAnswer(answer) === userAnswer
+        );
+
+        field.classList.remove("hg-correct", "hg-incorrect");
+
+        if (isCorrect) {
+          correct++;
+          field.classList.add("hg-correct");
+        } else {
+          field.classList.add("hg-incorrect");
+
+          const correctAnswer = possibleAnswers[0];
+          const explanation = task.comments[number];
+
+          feedback.push(
+            `<div class="hg-feedback-item">
+              <strong>№ ${number}.</strong>
+              Правильный ответ: <strong>${correctAnswer}</strong>.
+              ${explanation || ""}
+            </div>`
+          );
+        }
+      });
+
+      const percentage = Math.round((correct / total) * 100);
+
+      result.classList.add("visible");
+      result.classList.remove("success", "has-errors");
+
+      if (correct === total) {
+        result.classList.add("success");
+        result.innerHTML =
+          `🎉 Отлично! Все ответы правильные: ${correct} из ${total}.`;
+      } else {
+        result.classList.add("has-errors");
+        result.innerHTML =
+          `<strong>Результат: ${correct} из ${total} (${percentage}%).</strong>
+           <p>Посмотри пояснения к ошибкам:</p>
+           ${feedback.join("")}`;
+      }
+    });
+  });
+});
+
+/* =========================================
+   HOMEWORK — WORD FORMATION: AUTO CHECK
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const wordFormationAnswers = {
+    3: {
+      answers: {
+        1: ["unusual"],
+        2: ["population"],
+        3: ["traditional"],
+        4: ["recently"],
+        5: ["effective"],
+        6: ["disappear"]
+      },
+      comments: {
+        1: "К слову usual добавляется отрицательная приставка un-: unusual — необычный.",
+        2: "Нужно существительное population — население.",
+        3: "Перед существительным treatment требуется прилагательное traditional — традиционный.",
+        4: "Наречие времени recently — недавно.",
+        5: "После very требуется прилагательное effective — эффективный.",
+        6: "Нужен глагол disappear — исчезать. Приставка dis- меняет значение слова."
+      }
+    },
+
+    4: {
+      answers: {
+        1: ["traditional"],
+        2: ["geographical", "geographic"],
+        3: ["famous"],
+        4: ["tasty"],
+        5: ["fishing"],
+        6: ["imagination"]
+      },
+      comments: {
+        1: "Перед существительным dishes требуется прилагательное traditional — традиционные блюда.",
+        2: "Перед существительным position требуется прилагательное geographical или geographic — географическое положение.",
+        3: "Конструкция is famous for означает «известна благодаря чему-либо».",
+        4: "Перед существительным meat dishes требуется прилагательное tasty — вкусные блюда.",
+        5: "Fishing culture — рыболовная культура. Fishing используется как определение.",
+        6: "После притяжательного местоимения your требуется существительное imagination — воображение."
+      }
+    },
+
+    5: {
+      answers: {
+        1: ["scientist"],
+        2: ["drinking"],
+        3: ["exciting"],
+        4: ["explanation"],
+        5: ["healthy"],
+        6: ["probably"]
+      },
+      comments: {
+        1: "Нужно существительное, обозначающее профессию: scientist — учёный.",
+        2: "Drinking water — питьевая вода. Drinking используется как определение.",
+        3: "Перед существительным book требуется прилагательное exciting — захватывающий.",
+        4: "После артикля an требуется существительное explanation — объяснение.",
+        5: "После stay требуется прилагательное healthy — здоровый.",
+        6: "Вводное слово probably — вероятно. Здесь требуется наречие."
+      }
+    },
+
+    6: {
+      answers: {
+        1: ["amazing"],
+        2: ["healthy"],
+        3: ["swimming"],
+        4: ["friendly"],
+        5: ["wonderful"],
+        6: ["peaceful"]
+      },
+      comments: {
+        1: "Перед существительным life требуется прилагательное amazing — удивительная жизнь.",
+        2: "После stay требуется прилагательное healthy — здоровыми.",
+        3: "Swimming pools — плавательные бассейны. Swimming используется как определение.",
+        4: "После are требуется прилагательное friendly — дружелюбные.",
+        5: "После is требуется прилагательное wonderful — прекрасная.",
+        6: "После most требуется прилагательное peaceful — мирная."
+      }
+    }
+  };
+
+  function normalizeWordFormation(value) {
+    return String(value)
+      .trim()
+      .toLowerCase()
+      .replace(/[’‘]/g, "'")
+      .replace(/\s+/g, " ");
+  }
+
+  document.querySelectorAll("[data-word-check]").forEach(button => {
+    button.addEventListener("click", () => {
+      const taskNumber = button.dataset.wordCheck;
+      const task = wordFormationAnswers[taskNumber];
+
+      if (!task) return;
+
+      const fields = document.querySelectorAll(
+        `[data-word-task="${taskNumber}"]`
+      );
+
+      const result = document.getElementById(
+        `hw-word-result-${taskNumber}`
+      );
+
+      if (!result || fields.length === 0) return;
+
+      let correct = 0;
+      let total = 0;
+      const feedback = [];
+
+      fields.forEach(field => {
+        const number = field.dataset.wordN;
+        const possibleAnswers = task.answers[number];
+
+        if (!possibleAnswers) return;
+
+        total++;
+
+        const userAnswer = normalizeWordFormation(field.value);
+
+        const isCorrect = possibleAnswers.some(answer =>
+          normalizeWordFormation(answer) === userAnswer
+        );
+
+        field.classList.remove(
+          "hw-word-correct",
+          "hw-word-incorrect"
+        );
+
+        if (isCorrect) {
+          correct++;
+          field.classList.add("hw-word-correct");
+        } else {
+          field.classList.add("hw-word-incorrect");
+
+          feedback.push(
+            `<div class="hw-word-feedback">
+              <strong>№ ${number}.</strong>
+              Правильный ответ:
+              <strong>${possibleAnswers[0]}</strong>.
+              ${task.comments[number]}
+            </div>`
+          );
+        }
+      });
+
+      const percentage = Math.round((correct / total) * 100);
+
+      result.classList.add("visible");
+      result.classList.remove("success", "has-errors");
+
+      if (correct === total) {
+        result.classList.add("success");
+        result.textContent =
+          `🎉 Прекрасно! Все ответы правильные: ${correct} из ${total}.`;
+      } else {
+        result.classList.add("has-errors");
+        result.innerHTML =
+          `<strong>Результат: ${correct} из ${total} (${percentage}%).</strong>
+           <p>Разбери ошибки и попробуй ещё раз:</p>
+           ${feedback.join("")}`;
+      }
+    });
+  });
+});
+
+/* =========================================
+   GRAMMAR REVISION BANK — ANSWERS & CHECKING
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const grammarBank = {
+    1: {
+      answers: {
+        1: ["buys"],
+        2: ["is helping"],
+        3: ["went"],
+        4: ["was looking"],
+        5: ["was cooking"],
+        6: ["have never bought"],
+        7: ["visited"],
+        8: ["has gone"],
+        9: ["have already paid"],
+        10: ["did you do"]
+      },
+      comments: {
+        1: "Present Simple: a regular habit (usually).",
+        2: "Present Continuous: an action happening now (Look!).",
+        3: "Past Simple: a completed action at a definite time (last Saturday).",
+        4: "Past Continuous: an action in progress when another action happened.",
+        5: "Past Continuous: the longer background action; went is the shorter action.",
+        6: "Present Perfect: life experience up to now; no definite past time is given.",
+        7: "Past Simple: yesterday indicates a finished past time.",
+        8: "He went to the shopping centre and is still there or on his way.",
+        9: "Present Perfect: the action is completed and its result is important now.",
+        10: "Past Simple: last month is a finished period."
+      }
+    },
+
+    2: {
+      answers: {
+        1: ["a"],
+        2: ["the"],
+        3: ["—", "-", "no article"],
+        4: ["the"],
+        5: ["a"],
+        6: ["the"],
+        7: ["—", "-", "no article"],
+        8: ["a"],
+        9: ["the"],
+        10: ["a"]
+      },
+      comments: {
+        1: "First mention of a singular countable noun.",
+        2: "The jacket has already been mentioned.",
+        3: "Money is an uncountable noun used in a general meaning.",
+        4: "A particular supermarket, identified by near our house.",
+        5: "A profession; one of many shop assistants.",
+        6: "A particular café's food.",
+        7: "Music is an uncountable noun used generally.",
+        8: "First mention of a market.",
+        9: "The established expression the city centre.",
+        10: "A profession; fashion designer begins with a consonant sound."
+      }
+    },
+
+    3: {
+      answers: {
+        1: ["in"],
+        2: ["on"],
+        3: ["at"],
+        4: ["in"],
+        5: ["in"],
+        6: ["on", "at"],
+        7: ["at"],
+        8: ["on"],
+        9: ["at"],
+        10: ["on"]
+      },
+      comments: {
+        1: "In — inside the shopping centre.",
+        2: "On — floors of a building: on the second floor.",
+        3: "At — a specific point or place: at the entrance.",
+        4: "In — something displayed inside a shop window.",
+        5: "In — we say in the car.",
+        6: "Both on and at are possible in this context: on the corner or at the corner of a street.",
+        7: "At the back of the shop refers to a position in the shop.",
+        8: "On — we say on a bus.",
+        9: "At — fixed expression: at home.",
+        10: "On — information appears on a page."
+      }
+    },
+
+    4: {
+      answers: {
+        1: ["fifteen"],
+        2: ["thirty-two", "thirty two"],
+        3: ["one hundred", "a hundred"],
+        4: ["twenty-first", "twenty first"],
+        5: ["third"],
+        6: ["twelfth"],
+        7: ["fifty per cent", "fifty percent"],
+        8: ["one thousand", "a thousand"],
+        9: ["second"],
+        10: ["fifth"]
+      },
+      comments: {
+        1: "15 — fifteen.",
+        2: "32 — thirty-two.",
+        3: "100 — one hundred.",
+        4: "21st — twenty-first.",
+        5: "3rd — third.",
+        6: "12th — twelfth.",
+        7: "50% — fifty per cent.",
+        8: "1,000 — one thousand.",
+        9: "Second — the second time.",
+        10: "Fifth — the fifth floor."
+      }
+    },
+
+    5: {
+      answers: {
+        1: ["should"],
+        2: ["much"],
+        3: ["many"],
+        4: ["mustn't", "mustnt"],
+        5: ["don't have to", "dont have to"],
+        6: ["a little"],
+        7: ["a few"],
+        8: ["don't compare", "dont compare"],
+        9: ["reaches"],
+        10: ["should"]
+      },
+      comments: {
+        1: "Should — advice: you shouldn't spend all your pocket money on sweets.",
+        2: "Much — money is an uncountable noun.",
+        3: "Many — people is a countable noun in the plural.",
+        4: "Mustn't — prohibition: you are not allowed to touch the products.",
+        5: "Don't have to — there is no necessity to buy a new jacket.",
+        6: "A little — a small amount of the uncountable noun milk.",
+        7: "A few — a small number of the countable noun coins.",
+        8: "Don't compare — First Conditional uses Present Simple in the if-clause.",
+        9: "Reaches — Zero Conditional: a general fact; Present Simple in both clauses.",
+        10: "Should — advice to wear comfortable shoes."
+      }
+    },
+
+    6: {
+      answers: {
+        1: ["going"],
+        2: ["to buy"],
+        3: ["to save"],
+        4: ["wearing"],
+        5: ["to try on"],
+        6: ["shopping"],
+        7: ["to find"],
+        8: ["buying"],
+        9: ["stay"],
+        10: ["designing"]
+      },
+      comments: {
+        1: "Enjoy + -ing.",
+        2: "Want + to-infinitive.",
+        3: "Decide + to-infinitive.",
+        4: "Don't mind + -ing.",
+        5: "Would like + to-infinitive.",
+        6: "Prefer + -ing + to + -ing.",
+        7: "Hope + to-infinitive.",
+        8: "Avoid + -ing.",
+        9: "Would rather + infinitive without to.",
+        10: "After the preposition in, use the -ing form: interested in designing."
+      }
+    },
+
+    7: {
+      answers: {
+        1: ["i usually buy food at this supermarket"],
+        2: ["we bought these shoes last week"],
+        3: ["while i was trying on a jacket my phone rang"],
+        4: ["she has been to london twice"],
+        5: ["i bought a dress and the dress was very beautiful"],
+        6: ["there are many shops in this street"],
+        7: ["you must save some money"],
+        8: ["if you spend all your money you won't be able to buy a present"],
+        9: ["he enjoys looking at fashion magazines"],
+        10: ["the shop is on the second floor"]
+      },
+      comments: {
+        1: "Present Simple is used for habits; usually does not require Present Continuous.",
+        2: "Last week is a finished period in the past, so use Past Simple.",
+        3: "The longer action in the past takes Past Continuous; the shorter event takes Past Simple.",
+        4: "Has been to means that the person visited the place and returned. Has gone to means that the person is there now or is still on the way.",
+        5: "Use the when mentioning the same specific object again.",
+        6: "Shops is a countable plural noun; use many.",
+        7: "After must, use the infinitive without to.",
+        8: "In the First Conditional, use Present Simple after if, not Future Simple.",
+        9: "After enjoy, use the gerund with -ing.",
+        10: "Use the preposition on with floors of a building."
+      }
+    },
+
+    8: {
+      answers: {
+        1: ["have saved"],
+        2: ["have never been"],
+        3: ["haven't bought", "have not bought"],
+        4: ["don't have to buy", "do not have to buy"],
+        5: ["more expensive than"],
+        6: ["entered"],
+        7: ["prefer"],
+        8: ["aren't", "are not"]
+      },
+      comments: {
+        1: "Present Perfect shows an action that started in the past and continues up to the present.",
+        2: "Present Perfect describes life experience; never comes before the main verb.",
+        3: "Since May indicates a period from a point in the past until now.",
+        4: "Don't have to means there is no necessity.",
+        5: "The comparative form of the long adjective expensive is formed with more.",
+        6: "Both actions happened in the past; Past Simple is sufficient here.",
+        7: "Use the structure prefer doing something to doing something.",
+        8: "The if-clause uses Present Simple; the second clause uses the imperative."
+      }
+    },
+
+    9: {
+      answers: {
+        1: ["am looking"],
+        2: ["have never bought"],
+        3: ["have"],
+        4: ["does this jacket cost"],
+        5: ["on"],
+        6: ["at"],
+        7: ["was trying"]
+      },
+      comments: {
+        1: "The action is happening at the moment of speaking.",
+        2: "Present Perfect describes experience up to the present moment.",
+        3: "Present Simple: the shop has a special offer today. Have means 'to have'.",
+        4: "Present Simple question: auxiliary does + subject + infinitive.",
+        5: "Fixed expression: try on.",
+        6: "Fixed expression: at the back of the shop.",
+        7: "Past Continuous describes an action in progress in the past when another event happened (called)."
+      }
+    }
+  };
+
+  function normalizeBankAnswer(value) {
+    return String(value)
+      .trim()
+      .toLowerCase()
+      .replace(/[’‘]/g, "'")
+      .replace(/[.!?,;]/g, "")
+      .replace(/\s+/g, " ");
+  }
+
+  document.querySelectorAll("[data-bank-check]").forEach(button => {
+    button.addEventListener("click", () => {
+      const taskNumber = button.dataset.bankCheck;
+      const task = grammarBank[taskNumber];
+
+      if (!task) return;
+
+      const result = document.getElementById(
+        `bank-result-${taskNumber}`
+      );
+
+      const fields = document.querySelectorAll(
+        `[data-bank-answer^="${taskNumber}-"]`
+      );
+
+      if (!result || fields.length === 0) return;
+
+      let correct = 0;
+      let total = 0;
+      const feedback = [];
+
+      fields.forEach(field => {
+        const questionNumber = field.dataset.bankAnswer.split("-")[1];
+        const acceptedAnswers = task.answers[questionNumber];
+
+        if (!acceptedAnswers) return;
+
+        total++;
+
+        const userAnswer = normalizeBankAnswer(field.value);
+
+        const isCorrect = acceptedAnswers.some(answer =>
+          normalizeBankAnswer(answer) === userAnswer
+        );
+
+        field.classList.remove("bank-correct", "bank-incorrect");
+
+        if (isCorrect) {
+          correct++;
+          field.classList.add("bank-correct");
+        } else {
+          field.classList.add("bank-incorrect");
+
+          feedback.push(
+            `<div class="bank-feedback-item">
+              <strong>№ ${questionNumber}.</strong>
+              Correct answer:
+              <strong>${acceptedAnswers[0]}</strong>.
+              ${task.comments[questionNumber]}
+            </div>`
+          );
+        }
+      });
+
+      const percentage = Math.round((correct / total) * 100);
+
+      result.classList.add("visible");
+      result.classList.remove("success", "has-errors");
+
+      if (correct === total) {
+        result.classList.add("success");
+        result.innerHTML =
+          `🎉 Excellent! All answers are correct: <strong>${correct}/${total}</strong>.`;
+      } else {
+        result.classList.add("has-errors");
+        result.innerHTML =
+          `<strong>Your result: ${correct}/${total} (${percentage}%).</strong>
+           <p>Check the incorrect answers and try again:</p>
+           ${feedback.join("")}`;
+      }
+    });
+  });
+});
